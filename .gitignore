@@ -1,0 +1,10 @@
+node_modules/
+coverage/
+artifacts/
+monitor-output.json
+journey-output.json
+
+# This package has no dependencies, so there is nothing for a lockfile to pin.
+# A tracked lockfile that nothing compares against package.json can promise a
+# different engines floor from the file a reader looks at.
+package-lock.json
