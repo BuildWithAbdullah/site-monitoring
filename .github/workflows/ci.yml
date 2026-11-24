@@ -1,0 +1,96 @@
+# Seven jobs: the suite on three Node versions, the verifier, the generated
+# documents, and both halves of the engines floor.
+#
+# This file is written in the subset of YAML that src/scan/yaml.mjs reads, with
+# no flow collections and no block scalars, because the verifier reads it with
+# that reader when it checks the matrix. A claim asserts there is nothing in
+# here the reader cannot read, so the claim cannot end up reading a half parsed
+# document without noticing.
+#
+# A note on action references. The examples in patterns/ pin third party actions
+# to a commit, and this workflow does not. That is deliberate rather than an
+# oversight: the finding in the catalogue is about the workflow that holds the
+# monitoring credentials, where a tag that moves is a path into those
+# credentials. This workflow has no secrets at all and nothing to reach.
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - '20.18.1'
+          - '22.23.5'
+          - '24.11.1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: The floor names an exact version, so this is the version that ran
+        run: node --version
+      - name: Run the suite
+        run: npm test
+
+  verify:
+    name: verifier
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.18.1'
+      - name: Every claim in the fixed list has to hold
+        run: node tools/verify.mjs
+
+  documents:
+    name: generated documents
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.18.1'
+      - name: The documents have to match their builder
+        run: node tools/gen-docs.mjs --check
+
+  engines-floor:
+    name: the floor accepts the floor
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.18.1'
+      - name: Install at the declared floor
+        run: npm install --engine-strict
+
+  engines-refusal:
+    name: the floor actually refuses
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.18.1'
+      - name: A floor beyond the runtime has to be refused
+        run: node tools/engines-refusal.mjs
