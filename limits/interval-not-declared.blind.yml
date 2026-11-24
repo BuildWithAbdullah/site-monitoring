@@ -1,0 +1,22 @@
+# The workflow does not say what interval it is serving, so the schedule has
+# nothing to be compared against.
+name: Site monitors
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+concurrency:
+  group: site-monitors
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Run the monitors
+        run: node bin/site-monitoring.mjs monitors > monitor-output.json
+      - name: Keep the output
+        if: always()
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874
+        with:
+          name: monitor-output
+          path: monitor-output.json

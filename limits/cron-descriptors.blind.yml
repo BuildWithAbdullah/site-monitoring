@@ -1,0 +1,24 @@
+# The schedule is a descriptor rather than a five field expression, so its
+# period is not read and cannot be compared with the interval below it.
+name: Site monitors
+on:
+  schedule:
+    - cron: '@hourly'
+  workflow_dispatch:
+concurrency:
+  group: site-monitors
+env:
+  MONITOR_INTERVAL_MS: 300000
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Run the monitors
+        run: node bin/site-monitoring.mjs monitors > monitor-output.json
+      - name: Keep the output
+        if: always()
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874
+        with:
+          name: monitor-output
+          path: monitor-output.json

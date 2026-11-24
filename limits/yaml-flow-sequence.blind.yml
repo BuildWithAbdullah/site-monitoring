@@ -1,0 +1,15 @@
+# The steps are written as a flow sequence. The reader here understands block
+# collections, so this job's steps are not read at all and the step that is
+# allowed to fail is not judged.
+name: Site monitors
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+concurrency:
+  group: site-monitors
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps: [{ name: Run the monitors, run: node bin/site-monitoring.mjs monitors, continue-on-error: true }]

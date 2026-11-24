@@ -1,0 +1,32 @@
+{
+  "checks": [
+    {
+      "id": "home",
+      "url": "https://shop.example.com/",
+      "type": "http",
+      "intervalMs": 60000,
+      "timeoutMs": 10000,
+      "expectStatus": [
+        200
+      ],
+      "expectText": "Add to basket",
+      "regions": [
+        "eu-west-1",
+        "us-east-1"
+      ],
+      "tlsExpiryWarningDays": 21,
+      "retries": 2,
+      "backoffMs": 2000,
+      "retryMode": "sequential"
+    },
+    {
+      "id": "home-dns",
+      "type": "dns",
+      "host": "shop.example.com",
+      "regions": [
+        "eu-west-1",
+        "us-east-1"
+      ]
+    }
+  ]
+}

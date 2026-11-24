@@ -1,0 +1,19 @@
+{
+  "checks": [
+    {
+      "id": "home",
+      "url": "{{origin}}/basket",
+      "type": "http",
+      "intervalMs": 60000,
+      "timeoutMs": 10000,
+      "expectStatus": [
+        200
+      ],
+      "expectText": "Add to basket",
+      "regions": [
+        "eu-west-1",
+        "us-east-1"
+      ]
+    }
+  ]
+}

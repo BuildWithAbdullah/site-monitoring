@@ -1,0 +1,24 @@
+# The step is allowed to fail whenever the workflow was started by its schedule,
+# which is every run that matters. The value is an expression evaluated by the
+# platform, and this reader compares values rather than evaluating them.
+name: Site monitors
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+concurrency:
+  group: site-monitors
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Run the monitors
+        run: node bin/site-monitoring.mjs monitors
+        continue-on-error: ${{ github.event_name == 'schedule' }}
+      - name: Keep the output
+        if: always()
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874
+        with:
+          name: monitor-output
+          path: monitor-output.json
