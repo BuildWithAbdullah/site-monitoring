@@ -1,0 +1,28 @@
+{
+  "name": "site-monitoring",
+  "version": "1.0.0",
+  "description": "Monitoring patterns for production websites, with a failing example beside every corrected one and every limit of the checkers written down and tested.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "site-monitoring": "bin/site-monitoring.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20.18.1"
+  },
+  "scripts": {
+    "test": "node --test test/mask.test.mjs test/js.test.mjs test/yaml.test.mjs test/conf.test.mjs test/checks.test.mjs test/pairs.test.mjs test/limits.test.mjs test/cli.test.mjs test/tools.test.mjs test/verify.test.mjs test/perturb.test.mjs test/guards.test.mjs",
+    "verify": "node tools/verify.mjs",
+    "count": "node tools/count-tests.mjs",
+    "docs": "node tools/gen-docs.mjs",
+    "docs:check": "node tools/gen-docs.mjs --check",
+    "exit-codes": "node tools/exit-codes.mjs"
+  }
+}
