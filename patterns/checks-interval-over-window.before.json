@@ -1,0 +1,97 @@
+{
+  "checks": [
+    {
+      "id": "home",
+      "url": "https://shop.example.com/",
+      "type": "http",
+      "intervalMs": 900000,
+      "timeoutMs": 10000,
+      "expectStatus": [
+        200
+      ],
+      "expectText": "Add to basket",
+      "regions": [
+        "eu-west-1",
+        "us-east-1"
+      ],
+      "tlsExpiryWarningDays": 21
+    },
+    {
+      "id": "home-dns",
+      "type": "dns",
+      "host": "shop.example.com",
+      "regions": [
+        "eu-west-1",
+        "us-east-1"
+      ]
+    }
+  ],
+  "alerts": [
+    {
+      "id": "home-down",
+      "kind": "availability",
+      "severity": "high",
+      "windowMs": 300000,
+      "consecutiveFailures": 3,
+      "onNoData": "alert",
+      "dedupWindowMs": 600000,
+      "incidentBudgetMs": 1800000,
+      "receivers": [
+        {
+          "kind": "chat",
+          "target": "#ops"
+        }
+      ],
+      "escalation": [
+        {
+          "afterMs": 600000,
+          "receivers": [
+            {
+              "kind": "phone",
+              "target": "primary-oncall"
+            }
+          ]
+        }
+      ],
+      "runbook": "docs/runbooks/home-down.md",
+      "notifyOnRecovery": true,
+      "check": "home"
+    },
+    {
+      "id": "monitor-heartbeat",
+      "kind": "heartbeat",
+      "severity": "high",
+      "windowMs": 900000,
+      "consecutiveFailures": 2,
+      "onNoData": "alert",
+      "dedupWindowMs": 600000,
+      "incidentBudgetMs": 1800000,
+      "receivers": [
+        {
+          "kind": "chat",
+          "target": "#ops"
+        }
+      ],
+      "escalation": [
+        {
+          "afterMs": 600000,
+          "receivers": [
+            {
+              "kind": "phone",
+              "target": "primary-oncall"
+            }
+          ]
+        }
+      ],
+      "runbook": "docs/runbooks/monitor-heartbeat.md",
+      "notifyOnRecovery": true
+    }
+  ],
+  "maintenanceWindows": [
+    {
+      "id": "weekly-deploy",
+      "cron": "0 2 * * 2",
+      "durationMinutes": 30
+    }
+  ]
+}

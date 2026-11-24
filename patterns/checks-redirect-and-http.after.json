@@ -1,0 +1,48 @@
+{
+  "checks": [
+    {
+      "id": "home",
+      "url": "https://shop.example.com/",
+      "type": "http",
+      "intervalMs": 60000,
+      "timeoutMs": 10000,
+      "expectStatus": [
+        200
+      ],
+      "expectText": "Add to basket",
+      "regions": [
+        "eu-west-1",
+        "us-east-1"
+      ],
+      "tlsExpiryWarningDays": 21,
+      "followRedirects": false
+    },
+    {
+      "id": "legacy",
+      "url": "https://shop.example.com/old",
+      "type": "http",
+      "intervalMs": 60000,
+      "timeoutMs": 10000,
+      "expectStatus": [
+        200
+      ],
+      "expectText": "Add to basket",
+      "regions": [
+        "eu-west-1",
+        "us-east-1"
+      ],
+      "tlsExpiryWarningDays": 21,
+      "expectFinalUrl": "https://shop.example.com/old",
+      "followRedirects": true
+    },
+    {
+      "id": "home-dns",
+      "type": "dns",
+      "host": "shop.example.com",
+      "regions": [
+        "eu-west-1",
+        "us-east-1"
+      ]
+    }
+  ]
+}

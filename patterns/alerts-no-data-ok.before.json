@@ -1,0 +1,68 @@
+{
+  "alerts": [
+    {
+      "id": "home-down",
+      "kind": "availability",
+      "windowMs": 300000,
+      "consecutiveFailures": 3,
+      "onNoData": "ok",
+      "dedupWindowMs": 600000,
+      "incidentBudgetMs": 1800000,
+      "receivers": [
+        {
+          "kind": "chat",
+          "target": "#ops"
+        }
+      ],
+      "escalation": [
+        {
+          "afterMs": 600000,
+          "receivers": [
+            {
+              "kind": "phone",
+              "target": "primary-oncall"
+            }
+          ]
+        }
+      ],
+      "notifyOnRecovery": true,
+      "check": "home"
+    },
+    {
+      "id": "monitor-heartbeat",
+      "kind": "heartbeat",
+      "severity": "high",
+      "windowMs": 900000,
+      "consecutiveFailures": 2,
+      "onNoData": "alert",
+      "dedupWindowMs": 600000,
+      "incidentBudgetMs": 1800000,
+      "receivers": [
+        {
+          "kind": "chat",
+          "target": "#ops"
+        }
+      ],
+      "escalation": [
+        {
+          "afterMs": 600000,
+          "receivers": [
+            {
+              "kind": "phone",
+              "target": "primary-oncall"
+            }
+          ]
+        }
+      ],
+      "runbook": "docs/runbooks/monitor-heartbeat.md",
+      "notifyOnRecovery": true
+    }
+  ],
+  "maintenanceWindows": [
+    {
+      "id": "weekly-deploy",
+      "cron": "0 2 * * 2",
+      "durationMinutes": 30
+    }
+  ]
+}

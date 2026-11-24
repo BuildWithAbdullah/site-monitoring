@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-03-04T09:12:00Z",
+  "maxAgeDays": 14,
+  "findings": [
+    {
+      "id": "check-asserts-status-only",
+      "severity": "medium",
+      "file": "monitors/checks.json",
+      "excerpt": "home"
+    },
+    {
+      "id": "alert-no-escalation",
+      "severity": "medium",
+      "file": "monitors/alerts.json",
+      "excerpt": "home-down"
+    }
+  ]
+}

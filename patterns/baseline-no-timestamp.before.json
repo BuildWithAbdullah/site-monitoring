@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "findings": [
+    {
+      "id": "check-asserts-status-only",
+      "severity": "medium",
+      "file": "monitors/checks.json",
+      "excerpt": "home"
+    },
+    {
+      "id": "alert-no-escalation",
+      "severity": "medium",
+      "file": "monitors/alerts.json",
+      "excerpt": "home-down"
+    }
+  ]
+}

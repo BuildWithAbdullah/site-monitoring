@@ -1,0 +1,26 @@
+# The schedule now matches the interval, and somebody can start it by hand
+# during an incident instead of waiting for the next slot.
+name: Site monitors
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+concurrency:
+  group: site-monitors
+env:
+  MONITOR_INTERVAL_MS: 300000
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      # Commit references in these examples are illustrative.
+      - uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3
+      - name: Run the monitors
+        run: node bin/site-monitoring.mjs monitors --json > monitor-output.json
+      - name: Keep the output
+        if: always()
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874
+        with:
+          name: monitor-output
+          path: monitor-output.json

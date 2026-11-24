@@ -1,0 +1,27 @@
+{
+  "checks": [
+    {
+      "id": "admin",
+      "url": "https://admin.internal.example/health",
+      "type": "http",
+      "intervalMs": 60000,
+      "timeoutMs": 10000,
+      "expectStatus": [
+        200
+      ],
+      "expectText": "store",
+      "regions": [
+        "office-lan"
+      ],
+      "tlsExpiryWarningDays": 21
+    },
+    {
+      "id": "admin-dns",
+      "type": "dns",
+      "host": "admin.internal.example",
+      "regions": [
+        "office-lan"
+      ]
+    }
+  ]
+}

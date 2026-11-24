@@ -1,0 +1,12 @@
+{
+  "checks": [
+    {
+      "id": "home",
+      "url": "https://shop.example.com/",
+      "intervalMs": 60000,
+      "expectStatus": [
+        200
+      ]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "checks": [
+    {
+      "id": "admin",
+      "url": "https://admin.internal.example/health",
+      "intervalMs": 60000,
+      "expectStatus": [
+        200
+      ]
+    }
+  ]
+}
